@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Cumpleaños de Spiderman!</title>
+    <!-- Fuentes tipo Canva/Comic -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --spider-red: #E62429;
+            --spider-blue: #005A9C;
+            --spider-black: #121212;
+            --spider-gold: #FFD700;
+        }
+
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--spider-black);
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Fondo Animado de Telaraña */
+        .page-wrapper {
+            background: 
+                radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.9) 100%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cpath d='M200 0v400M0 200h400M40 40l320 320M360 40L40 360' stroke='white' stroke-opacity='0.1' stroke-width='1' fill='none'/%3E%3Ccircle cx='200' cy='200' r='50' stroke='white' stroke-opacity='0.1' fill='none'/%3E%3Ccircle cx='200' cy='200' r='100' stroke='white' stroke-opacity='0.1' fill='none'/%3E%3Ccircle cx='200' cy='200' r='150' stroke='white' stroke-opacity='0.1' fill='none'/%3E%3C/svg%3E");
+            min-height: 100vh;
+        }
+
+        /* Contenedor tipo Canva */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(20, 20, 20, 0.95);
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(230, 36, 41, 0.3);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        /* Sección Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--spider-black)),
+                        url('https://images.unsplash.com/photo-1635805737707-575885ab0820?auto=format&fit=crop&q=80&w=1000') center/cover;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 4.5rem;
+            margin-bottom: 0;
+            color: white;
+            text-shadow: 4px 4px 0px var(--spider-red), 8px 8px 0px var(--spider-blue);
+            line-height: 1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* Tarjeta de Detalles */
+        .card {
+            padding: 40px 20px;
+            margin: 20px;
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            border-radius: 20px;
+            border: 2px solid var(--spider-blue);
+            text-align: center;
+        }
+
+        .card h2 {
+            font-family: 'Bangers', cursive;
+            color: var(--spider-red);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .date-box {
+            font-size: 1.5rem;
+            color: var(--spider-gold);
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        /* Botones */
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            margin: 15px auto;
+            padding: 18px;
+            background: var(--spider-red);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 36, 41, 0.4);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: var(--spider-blue);
+        }
+
+        .btn-alt {
+            background: transparent;
+            border: 2px solid var(--spider-blue);
+            box-shadow: none;
+        }
+
+        /* Contador */
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .count-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .count-val {
+            display: block;
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            color: var(--spider-red);
+        }
+
+        .count-label { font-size: 0.8rem; opacity: 0.7; }
+
+        /* Animaciones */
+        .fade {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.8s ease-out;
+        }
+
+        .fade.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--spider-blue);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            border: 2px solid white;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="music" loop>
+        <!-- Reemplaza con un link de música de Spiderman si tienes uno directo -->
+        <source src="https://open.spotify.com/track/0Y3O26M06mYyG3JJ61utDS?si=sC9Xi6QYRWuOTfG5do42Ww">
+    </audio>
+
+    <div id="music-btn" onclick="toggleMusic()">🎵</div>
+
+    <div class="page-wrapper">
+        <div class="container">
+            
+            <!-- PORTADA -->
+            <section class="hero">
+                <h1 class="fade" id="nombre-display">Adonai</h1>
+                <p class="fade">¡Mi cumple número <span id="edad-display">7</span>!</p>
+                <button class="btn fade" onclick="scrollToDetails()">Ver invitación 🕸️</button>
+            </section>
+
+            <!-- DETALLES -->
+            <div id="detalles">
+                <section class="card fade">
+                    <h2>📅 CUÁNDO</h2>
+                    <div class="date-box" id="fecha-display">Sábado 20 de Octubre</div>
+                    <p>¡No faltes a esta gran aventura!</p>
+                </section>
+
+                <section class="card fade">
+                    <h2>📍 DÓNDE</h2>
+                    <p>En el Salón Arácnido (Calle Falsa 123)</p>
+                    <a id="mapa-btn" class="btn btn-alt" target="_blank">Abrir Google Maps</a>
+                </section>
+
+                <section class="card fade">
+                    <h2>⏳ FALTAN</h2>
+                    <div class="countdown-grid" id="countdown">
+                        <div class="count-item"><span class="count-val" id="dias">00</span><span class="count-label">DÍAS</span></div>
+                        <div class="count-item"><span class="count-val" id="horas">00</span><span class="count-label">HORAS</span></div>
+                    </div>
+                </section>
+
+                <section class="card fade">
+                    <h2>📱 CONFIRMA</h2>
+                    <p>Por favor avísanos antes del evento</p>
+                    <a id="whatsapp-btn" class="btn">Confirmar por WhatsApp</a>
+                </section>
+
+                <footer style="padding: 40px; text-align: center; opacity: 0.5; font-size: 0.8rem;">
+                    ¡Te esperamos con tus superpoderes!
+                </footer>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Parámetros de la URL
+        const params = new URLSearchParams(window.location.search);
+        const config = {
+            nombre: params.get("nombre") || "¡Adonai!",
+            edad: params.get("edad") || "9",
+            fecha: params.get("fecha") || "2026-04-29T17:00",
+            mapa: params.get("mapa") || "https://www.google.com.mx/maps/place/23+de+Noviembre+3063,+Jardines+de+Santa+Isabel,+44300+Guadalajara,+Jal./@20.7133835,-103.3062192,17z/data=!3m1!4b1!4m6!3m5!1s0x8428b1cd182405d1:0x1bf6cb336f1a4841!8m2!3d20.7133835!4d-103.3036443!16s%2Fg%2F11q3_kqh77?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D",
+            tel: params.get("tel") || "3330591750"
+        };
+
+        // Rellenar datos
+        document.getElementById("nombre-display").textContent = config.nombre.toUpperCase();
+        document.getElementById("edad-display").textContent = config.edad;
+        document.getElementById("mapa-btn").href = config.mapa;
+        
+        const fechaObj = new Date(config.fecha);
+        document.getElementById("fecha-display").textContent = fechaObj.toLocaleDateString('es-ES', { 
+            weekday: 'long', day: 'numeric', month: 'long' 
+        });
+
+        const msg = encodeURIComponent(`¡Hola! Confirmo mi asistencia a la fiesta de ${config.nombre}. 🕷️`);
+        document.getElementById("whatsapp-btn").href = `https://wa.me/${config.tel}?text=${msg}`;
+
+        // Scroll y Música
+        function scrollToDetails() {
+            document.getElementById('detalles').scrollIntoView({ behavior: 'smooth' });
+            playMusic();
+        }
+
+        function playMusic() {
+            const m = document.getElementById("music");
+            m.play().catch(() => console.log("Interacción requerida para audio"));
+        }
+
+        function toggleMusic() {
+            const m = document.getElementById("music");
+            if (m.paused) m.play(); else m.pause();
+        }
+
+        // Animaciones IntersectionObserver
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add("show");
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+        // Contador
+        setInterval(() => {
+            const ahora = new Date().getTime();
+            const diff = new Date(config.fecha).getTime() - ahora;
+            if (diff > 0) {
+                document.getElementById("dias").textContent = Math.floor(diff / (1000*60*60*24));
+                document.getElementById("horas").textContent = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            } else {
+                document.getElementById("countdown").innerHTML = "¡ES EL DÍA! 🕷️";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
